@@ -1,4 +1,4 @@
-package com.example.cupcake.model
+package com.anjasolutions.cupcake.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

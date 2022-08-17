@@ -22,11 +22,11 @@
 
         <variable
             name="viewModel"
-            type="com.example.cupcake.model.OrderViewModel" />
+            type="com.anjasolutions.cupcake.model.OrderViewModel" />
 
         <variable
             name="summaryFragment"
-            type="com.example.cupcake.SummaryFragment" />
+            type="com.anjasolutions.cupcake.SummaryFragment" />
     </data>
 
     <ScrollView
@@ -85,8 +85,8 @@
                     style="@style/Widget.Cupcake.TextView.OrderSummary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.flavor}"
                     android:layout_marginTop="@dimen/order_summary_margin"
+                    android:text="@{viewModel.flavor}"
                     tools:text="Chocolate" />
 
                 <View

@@ -13,35 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cupcake
-
+package com.anjasolutions.cupcake
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.cupcake.databinding.FragmentFlavorBinding
-import com.example.cupcake.model.OrderViewModel
+import com.anjasolutions.cupcake.databinding.FragmentStartBinding
 
-/**
- * [FlavorFragment] allows a user to choose a cupcake flavor for the order.
- */
-class FlavorFragment : Fragment() {
 
-    // Binding object instance corresponding to the fragment_flavor.xml layout
+import com.anjasolutions.cupcake.model.OrderViewModel
+
+/** This is the first screen of the Cupcake app. The user can choose how many cupcakes to order. */
+class StartFragment : Fragment() {
+
+    // Binding object instance corresponding to the fragment_start.xml layout
     // This property is non-null between the onCreateView() and onDestroyView() lifecycle callbacks,
     // when the view hierarchy is attached to the fragment.
-    private var binding: FragmentFlavorBinding? = null
-    private val sharedModel: OrderViewModel by activityViewModels()
+    private var binding: FragmentStartBinding? = null
+    private val sharedViewModel: OrderViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentFlavorBinding.inflate(inflater, container, false)
+        val fragmentBinding = FragmentStartBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
     }
@@ -49,23 +48,16 @@ class FlavorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = sharedModel
-            flavorFragment = this@FlavorFragment
+        binding?.startFragment = this
+    }
+
+    /** Start an order with the desired quantity of cupcakes and navigate to the next screen. */
+    fun orderCupcake(quantity: Int) {
+        sharedViewModel.setQuantity(quantity)
+        if (sharedViewModel.hasNoFlavorSet()) {
+            sharedViewModel.setFlavor("Vanilla")
         }
-    }
-
-    /**
-     * Navigate to the next screen to choose pickup date.
-     */
-    fun goToNextScreen() {
-        findNavController().navigate(R.id.action_flavorFragment_to_pickupFragment)
-    }
-
-    fun cancelOrder() {
-        sharedModel.resetOrder()
-        findNavController().navigate(R.id.action_flavorFragment_to_startFragment)
+        findNavController().navigate(R.id.action_startFragment_to_flavorFragment)
     }
 
     /**
@@ -73,6 +65,7 @@ class FlavorFragment : Fragment() {
      * is being removed. As a result, clear out the binding object.
      */
     override fun onDestroyView() {
+
         super.onDestroyView()
         binding = null
     }
